@@ -1,0 +1,22 @@
+version: '3'
+
+volumes:
+  db_data:
+
+services:
+  web:
+    build:
+      context: .
+    volumes:
+      - .:/var/www/html
+      - ./default.conf:/etc/apache2/sites-available/default.conf
+    links:
+      - db
+    ports:
+      - 80:80
+
+  db:
+    image: mariadb:10.3
+    volumes:
+      - db_data:/var/lib/mysql
+    env_file: .env
